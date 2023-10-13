@@ -13,21 +13,98 @@
 </body>
 <script type="text/babel">
     const root = document.getElementById("root");
-    // const Title = (<h3 id = "title" onClick={() => console.log("click")}>Helleo</h3>);
-    const Button =()=> (<button id = "button" onClick={() => console.log("click") } >CLick me</button>);
-    function Title(){
-        return (<h3 id = "title" onClick={() => console.log("click")}>Helleo</h3>);
+    function MinToHour(){
+        const [amount,setAmount] =React.useState(0);
+        const [flipped,setFlipped] = React.useState(false);
+        const onChange =(event)=>{
+            // console.log(event.target.value);
+            setAmount(event.target.value);
+        }
+        const reset = (event) =>{
+            setAmount(0);
+        }
+        const onFlip = () => {
+            setFlipped((curnnet) => !flipped);
+            setAmount(0);
+        }
+        return (
+        <div>
+            <label>minutes</label>
+           <input 
+           placeholder = "minutes" 
+           type="amount" 
+           value = {flipped ? amount*60 : amount}
+           disabled = {flipped}
+           onChange={onChange}
+           />
+           <div>You want to convert {amount}</div>
+            <label>hours</label>
+           <input  placeholder = "hours" 
+           type="numnber" 
+           value = {flipped ? amount : Math.round(amount/60)}
+           onChange = {onChange}
+           disabled = {flipped === false}
+          />
+           <button onClick={reset}>reset</button>
+           <button onClick = {onFlip}>{flipped ? "time" : "minutese"}</button>
+
+        </div>
+    );
     }
-    const h3 = React.createElement(
-        "h3",
-       null,
-        "hello Test Span"
-        );
-    const Container = ()=>
-    <div>
-       <Title /><Button />
-    </div>
-    ReactDOM.render(<Container />, root);
+    function KMToMiles(){
+        return(
+        <h1>KMTomiles</h1>
+
+        )
+   }
+    function App(){
+        const [index,setIndex] = React.useState("0");
+       const onSelect = (event) =>{
+        console.log(event.target.value);
+        setIndex((curnnet)=>event.target.value);
+       }
+    return (
+        <div>
+            <h1>Super Converter</h1>
+           <select onChange={onSelect} value = {index}>
+                <option value="0">minToHours</option>
+                <option value="1">KMToMiles</option>
+            </select>
+          {index === "0" ? <MinToHour/> : null}
+          {index === "1" ? <KMToMiles/> :null}
+        </div>
+    );
+    }
+    function MakeBtn(name,fontSize,onClick){
+        return(
+            <button style = {{
+                backgroundColor:"blue",
+                color:"white",
+                padding : "10px 20px",
+                border :0,
+                borderRadius : 10,
+                fontSize
+            }}
+            
+            onClick={onClick} 
+             >{name}</button>
+        )
+
+    }
+    const MemorizeBtn = React.memo(Btn);
+    function Props(){
+        const[value,setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Change")
+        return(
+            <div>
+                <App/>
+                <MakeBtn name = {value} onClick={changeValue}/>
+                <MakeBtn name = "del" fontSize = "10"/>
+            </div>
+
+        )
+    }
+    ReactDOM.render(<Props />, root);
    
 </script>
 </html>
